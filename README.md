@@ -20,7 +20,9 @@ How do I get set up?
 * type `npm start` to run the web server
 * type `npm run test` to run unit testing (in progress)
 
+
 Contribution guidelines
 
+
 Who do I talk to?
-*omclabs@gmail.com
+* omclabs@gmail.com
