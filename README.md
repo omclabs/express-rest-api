@@ -2,9 +2,9 @@ ExpressJS REST Api template
 
 What is this repository for?
 a REST API application template using Express
-** Include :
 * URI Versioning
 * JWT auth
+* User register using MongoDB
 
 How do I get set up?
 
