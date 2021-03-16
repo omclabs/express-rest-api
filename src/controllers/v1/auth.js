@@ -1,198 +1,143 @@
-const helpers = require("../../utils/helpers");
-const User = require("../../models/User");
-const Auth = require("../../models/Auth");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
+
+const helpers = require("../../utils/helpers");
+const Errors = require("../../utils/errors");
+
+const User = require("../../models/User");
+const Auth = require("../../models/Auth");
 const {
 	registerValidation,
 	loginValidation,
 } = require("../../validators/v1/auth");
 
 exports.register = async (req, res, next) => {
-	let { error } = registerValidation(req.body);
+	const { error } = registerValidation(req.body);
 
 	if (error) {
-		let message = error.details[0].message.toString();
-		return res
-			.status(422)
-			.json(helpers.formatReturn("error", 422, {}, message));
+		next(Errors.unprocessable(error.details[0].message.toString()));
 	}
 
 	try {
-		let emailExist = await User.findOne({ email: req.body.email });
+		const emailExist = await User.findOne({ email: req.body.email });
 		if (emailExist) {
-			return res
-				.status(422)
-				.json(helpers.formatReturn("error", 422, {}, "Email already exist"));
+			next(Errors.unprocessable("Email already exists"));
 		}
 
-		let salt = await bcrypt.genSalt(10);
-		let hashedPassword = await bcrypt.hash(req.body.password, salt);
-		let user = new User({
+		const salt = await bcrypt.genSalt(10);
+		const hashedPassword = await bcrypt.hash(req.body.password, salt);
+		const user = new User({
 			name: req.body.name,
 			email: req.body.email,
 			password: hashedPassword,
 		});
 
 		await user.save();
-
-		res
-			.status(201)
-			.json(
-				helpers.formatReturn("success", 201, { user: user._id }, "User created")
-			);
+		const result = {
+			user: user._id,
+		};
+		res.status(201).json(helpers.formatReturn("success", 201, result));
 	} catch (err) {
-		error = new Error("Error");
-		error.status = 500;
-		error.message = err.message;
-		next(error);
+		next(Errors.serverError(err.message));
 	}
 };
 
 exports.login = async (req, res, next) => {
-	let { error } = loginValidation(req.body);
+	const { error } = loginValidation(req.body);
 	if (error) {
-		let message = error.details[0].message.toString();
-		return res
-			.status(422)
-			.json(helpers.formatReturn("error", 422, {}, message));
+		next(Errors.unprocessable(error.details[0].message.toString()));
 	}
 
 	try {
-		let user = await User.findOne({ email: req.body.email });
-		let message = `Email or Password Failed`;
-
+		const user = await User.findOne({ email: req.body.email });
+		const message = `Email or Password Failed`;
 		if (!user) {
-			return res
-				.status(422)
-				.json(helpers.formatReturn("error", 422, {}, message));
+			next(Errors.unprocessable(message));
 		}
 
-		let validPassword = await bcrypt.compare(req.body.password, user.password);
+		const validPassword = await bcrypt.compare(
+			req.body.password,
+			user.password
+		);
 		if (!validPassword) {
-			return res
-				.status(422)
-				.json(helpers.formatReturn("error", 422, {}, message));
+			next(Errors.unprocessable(message));
 		}
 
-		let accessToken = generateAccessToken(user._id);
-
-		let refreshToken = jwt.sign(
+		const accessToken = generateAccessToken(user._id);
+		const refreshToken = jwt.sign(
 			{ _id: user._id },
 			process.env.PRIVATE_SECRET_KEY
 		);
 
-		let exists = await Auth.findOne({ user: user._id });
+		const exists = await Auth.findOne({ user: user._id });
 		if (exists) {
 			exists.token = refreshToken;
 			await exists.save();
 		} else {
-			let auth = new Auth({
+			const auth = new Auth({
 				user: user._id,
 				token: refreshToken,
 			});
 			await auth.save();
 		}
 
-		res.status(201);
-		res.json(
-			helpers.formatReturn(
-				"success",
-				201,
-				{
-					user: user._id,
-					access_token: accessToken,
-					refresh_token: refreshToken,
-				},
-				""
-			)
-		);
+		const result = {
+			user: user._id,
+			access_token: accessToken,
+			refresh_token: refreshToken,
+		};
+		res.status(201).json(helpers.formatReturn("success", 201, result));
 	} catch (err) {
-		error = new Error("Error");
-		error.status = 500;
-		error.message = err.message;
-		next(error);
+		next(Errors.serverError(err.message));
 	}
 };
 
 exports.logout = async (req, res, next) => {
-	let refreshToken = req.header("authorization");
-
+	const refreshToken = req.header("authorization");
 	if (!refreshToken) {
-		return res
-			.status(401)
-			.json(helpers.formatReturn("error", 401, {}, "Access denied"));
+		next(Errors.unauthorize("Access denied"));
 	}
 
 	try {
-		let auth = await Auth.findOne({ token: refreshToken });
-
+		const auth = await Auth.findOne({ token: refreshToken });
 		if (!auth) {
-			let message = `Invalid Token`;
-			return res
-				.status(403)
-				.json(helpers.formatReturn("error", 403, {}, message));
+			next(Errors.forbidden("Invalid token"));
 		}
 
-		let verified = await jwt.verify(
+		const verified = await jwt.verify(
 			refreshToken,
 			process.env.PRIVATE_SECRET_KEY
 		);
-
 		await auth.delete();
-
-		res
-			.status(201)
-			.json(helpers.formatReturn("success", 204, {}, "User deleted"));
+		const result = {
+			message: "Logged out",
+		};
+		res.status(201).json(helpers.formatReturn("success", 204, result));
 	} catch (err) {
-		error = new Error("Error");
-		error.status = 500;
-		error.message = err.message;
-		next(error);
+		next(Errors.serverError(err.message));
 	}
 };
 
 exports.token = async (req, res, next) => {
-	let refreshToken = req.header("authorization");
-
+	const refreshToken = req.header("authorization");
 	if (!refreshToken) {
-		return res
-			.status(401)
-			.json(helpers.formatReturn("error", 401, {}, "Access denied"));
+		next(Errors.unauthorize("Access denied"));
 	}
 
 	try {
-		let auth = await Auth.findOne({ token: refreshToken });
-
+		const auth = await Auth.findOne({ token: refreshToken });
 		if (!auth) {
-			let message = `Invalid Token`;
-			return res
-				.status(403)
-				.json(helpers.formatReturn("error", 403, {}, message));
+			next(Errors.forbidden("Invalid token"));
 		}
 
-		let verified = await jwt.verify(
-			refreshToken,
-			process.env.PRIVATE_SECRET_KEY
-		);
-
-		let accessToken = generateAccessToken(auth.user);
-
-		res.status(201).json(
-			helpers.formatReturn(
-				"success",
-				201,
-				{
-					access_token: accessToken,
-				},
-				""
-			)
-		);
+		await jwt.verify(refreshToken, process.env.PRIVATE_SECRET_KEY);
+		const accessToken = generateAccessToken(auth.user);
+		const result = {
+			access_token: accessToken,
+		};
+		res.status(201).json(helpers.formatReturn("success", 201, result));
 	} catch (err) {
-		error = new Error("Error");
-		error.status = 500;
-		error.message = err.message;
-		next(error);
+		next(Errors.serverError(err.message));
 	}
 };
 

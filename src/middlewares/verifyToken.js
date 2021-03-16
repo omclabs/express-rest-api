@@ -1,21 +1,18 @@
 const jwt = require("jsonwebtoken");
-const helpers = require("../utils/helpers");
+const Errors = require("../utils/errors");
 
 module.exports = function (req, res, next) {
-	let token = req.header("authorization");
-	if (!token)
-		return res
-			.status(401)
-			.json(helpers.formatReturn("error", 401, {}, "Access denied"));
+	const token = req.header("authorization");
+	if (!token) {
+		next(Errors.badRequest("Access Denied"));
+		return;
+	}
 
 	try {
-		let verified = jwt.verify(token, process.env.PUBLIC_SECRET_KEY);
+		const verified = jwt.verify(token, process.env.PUBLIC_SECRET_KEY);
 		req.user = verified;
 		next();
 	} catch (err) {
-		error = new Error("Error");
-		error.status = 403;
-		error.message = "Invalid token";
-		next(error);
+		next(Errors.forbidden("Invalid Token"));
 	}
 };
