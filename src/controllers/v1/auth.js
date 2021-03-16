@@ -112,7 +112,7 @@ exports.logout = async (req, res, next) => {
 		const result = {
 			message: "Logged out",
 		};
-		res.status(201).json(helpers.formatReturn("success", 204, result));
+		res.status(204).json(helpers.formatReturn("success", 204, result));
 	} catch (err) {
 		next(Errors.serverError(err.message));
 	}
