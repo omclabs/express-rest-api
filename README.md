@@ -23,7 +23,7 @@ How do I get set up?
 - type `npm start` to run the production web server
 - type `npm run dev` to run the developtment web server
 - type `npm run pretest` to run eslint checker and eslint autofix
-- type `npm run test` to run unit testing (in progress)
+- type `npm run test` to run unit testing
 
 Contribution guidelines
 
