@@ -7,7 +7,7 @@ const myFormat = printf(
 );
 
 const logger = createLogger({
-  level: 'info',
+  level: process.env.NODE_ENV === 'test' ? [] : 'info',
   format: combine(timestamp(), myFormat),
   transports: [
     new transports.Console(),

@@ -57,9 +57,9 @@ exports.login = async (req, res, next) => {
 
   try {
     const user = await User.findOne({ email: req.body.email });
-    const message = 'Email or Password Failed';
+    // const message = 'Email or Password Failed';
     if (!user) {
-      next(Errors.unprocessable(message));
+      next(Errors.unprocessable('user tak ada'));
     }
 
     const validPassword = await bcrypt.compare(
@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
       user.password,
     );
     if (!validPassword) {
-      next(Errors.unprocessable(message));
+      next(Errors.unprocessable('password salh'));
     }
 
     const accessToken = generateAccessToken(user._id);
