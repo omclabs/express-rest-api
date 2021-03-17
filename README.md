@@ -6,6 +6,7 @@ a REST API application template using Express
 - URI Versioning
 - JWT auth
 - User register using MongoDB
+- ESLint with Airbnb style
 
 How do I get set up?
 
@@ -21,6 +22,7 @@ How do I get set up?
 - adjust .env to your environment
 - type `npm start` to run the production web server
 - type `npm run dev` to run the developtment web server
+- type `npm run pretest` to run eslint checker and eslint autofix
 - type `npm run test` to run unit testing (in progress)
 
 Contribution guidelines

@@ -1,19 +1,19 @@
-const Joi = require("joi");
+const Joi = require('joi');
 
-exports.registerValidation = (data, next) => {
-	const schema = Joi.object({
-		name: Joi.string().min(8).max(100).required(),
-		email: Joi.string().max(100).required().email(),
-		password: Joi.string().min(8).required(),
-		repeat_password: Joi.ref("password"),
-	});
-	return schema.validate(data);
+exports.registerValidation = (data) => {
+  const schema = Joi.object({
+    name: Joi.string().min(8).max(100).required(),
+    email: Joi.string().max(100).required().email(),
+    password: Joi.string().min(8).required(),
+    repeat_password: Joi.ref('password'),
+  });
+  return schema.validate(data);
 };
 
 exports.loginValidation = (data) => {
-	const schema = Joi.object({
-		email: Joi.string().required().email(),
-		password: Joi.string().required(),
-	});
-	return schema.validate(data);
+  const schema = Joi.object({
+    email: Joi.string().required().email(),
+    password: Joi.string().required(),
+  });
+  return schema.validate(data);
 };
