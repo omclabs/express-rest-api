@@ -1,6 +1,7 @@
-ExpressJS REST Api template
+## ExpressJS REST Api template
 
-What is this repository for?
+### What is this repository for?
+
 a REST API application template using Express
 
 - URI Versioning
@@ -9,7 +10,7 @@ a REST API application template using Express
 - ESLint with Airbnb style
 - Unit testing
 
-How do I get set up?
+### How do I get set up?
 
 \*\*\* Requirement
 
@@ -21,13 +22,20 @@ How do I get set up?
 - copy `.env.example` -> `.env`
 - copy `.env.example` -> `.env.test`
 - adjust `.env` and `.env.test` to your environment
+
+\*\*\* Running on your local environment
+
 - type `npm start` to run the production web server
-- type `npm run dev` to run the developtment web server
+- type `npm run dev` to run the development web server
 - type `npm run pretest` to run eslint checker and eslint autofix
 - type `npm run test` to run unit testing
 
-Contribution guidelines
+\*\*\* Running development on docker container
 
-Who do I talk to?
+- if you have docker installed , you can run `docker-compose up` to run development container. And `docker-compose down` to remove it.
 
-- omclabs@gmail.com
+### Contribution guidelines
+
+### Who do I talk to?
+
+- Fajar Pratama <omclabs@gmail.com>

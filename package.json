@@ -42,7 +42,7 @@
     "rest-api"
   ],
   "author": "Fajar Pratama (omclabs@gmail.com)",
-  "license": "ISC",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/omclabs/express-rest-api/issues"
   },
