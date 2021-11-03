@@ -10,8 +10,17 @@ services:
       - mongo
     volumes:
       - './:/usr/src/app'
+    networks:
+      - node_stack
+
   mongo:
     container_name: rest-api-db
     image: mongo
     ports:
       - '27017:27017'
+    networks:
+      - node_stack
+
+networks:
+  node_stack:
+    driver: bridge

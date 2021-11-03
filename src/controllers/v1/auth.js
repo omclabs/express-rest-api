@@ -67,7 +67,7 @@ exports.login = async (req, res, next) => {
       user.password,
     );
     if (!validPassword) {
-      next(Errors.unprocessable('password salh'));
+      next(Errors.unprocessable('password salah'));
     }
 
     const accessToken = generateAccessToken(user._id);

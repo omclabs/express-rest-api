@@ -1,0 +1,335 @@
+{
+	"info": {
+		"_postman_id": "81517813-3dff-4be0-8058-2cbdb78d701f",
+		"name": "rest-api-node",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "auth",
+			"item": [
+				{
+					"name": "Register new user",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"name\": \"djarwooo\",\n    \"email\": \"djarwo@gmail.com\",\n    \"password\": \"12345678\",\n    \"repeat_password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"register"
+							]
+						},
+						"description": "Use this endpoin to create new user.\nex:\n\ncurl --location --request POST 'localhost:3000/api/v1/register' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"name\": \"djarwooo\",\n    \"email\": \"djarwo@gmail.com\",\n    \"password\": \"12345678\",\n    \"repeat_password\": \"12345678\"\n}'\n"
+					},
+					"response": []
+				},
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{    \n    \"email\": \"djarwo@gmail.com\",\n    \"password\": \"12345678\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/login",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"login"
+							]
+						},
+						"description": "Use this endpoint to login and get access_token and refresh_token\nex:\n\ncurl --location --request POST 'localhost:3000/api/v1/login' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{    \n    \"email\": \"djarwo@gmail.com\",\n    \"password\": \"12345678\"\n}'\n\nuse access_token to access endpoint with auth token. and use refresh_token to change existing access_token."
+					},
+					"response": []
+				},
+				{
+					"name": "Logout",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxOTQ3NGQwZWY5NzU4NWVmNjI1ODMiLCJpYXQiOjE2MTU5NTk2NzN9.yy4rq1-3cIanWIpzCzBplUJ3uRoS2VGPh1zDKCYunA8",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/api/v1/logout",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"logout"
+							]
+						},
+						"description": "Use this endpoin to invalidate user token\nEx:\n\ncurl --location --request DELETE 'localhost:3000/api/v1/logout' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MDUxOTQ3NGQwZWY5NzU4NWVmNjI1ODMiLCJpYXQiOjE2MTU5NTk2NzN9.yy4rq1-3cIanWIpzCzBplUJ3uRoS2VGPh1zDKCYunA8'"
+					},
+					"response": []
+				},
+				{
+					"name": "Get new token",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "authorization",
+								"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyMjBjMjI1ZmNmYzAwMWVjZDc3OGYiLCJpYXQiOjE2MzU5MTgzMjd9.5mIH0_OvGizB47f976uD8ZfDTIvSyrcbMMHySs5RdFY",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n    \"user\": \"djarwo@gmail.com\"\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "localhost:3000/api/v1/token",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"v1",
+								"token"
+							]
+						},
+						"description": "Use this endpoin to get new `access_token` and invalid old `access_token`\n\nex:\ncurl --location --request POST 'localhost:3000/api/v1/token' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyMjBjMjI1ZmNmYzAwMWVjZDc3OGYiLCJpYXQiOjE2MzU5MTgzMjd9.5mIH0_OvGizB47f976uD8ZfDTIvSyrcbMMHySs5RdFY' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"user\": \"djarwo@gmail.com\"\n}'\n"
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "transaction",
+			"item": [
+				{
+					"name": "Customer",
+					"item": [
+						{
+							"name": "Get all customers",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/api/v1/customers?page=1&limit=10",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"customers"
+									],
+									"query": [
+										{
+											"key": "page",
+											"value": "1"
+										},
+										{
+											"key": "limit",
+											"value": "10"
+										}
+									]
+								},
+								"description": "Use this endpoint to get all customer list with pagination enable\nex: \n\ncurl --location --request GET 'localhost:3000/api/v1/customers?page=1&limit=10' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM'"
+							},
+							"response": []
+						},
+						{
+							"name": "Create Customer",
+							"request": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5Mjk2MDIsImV4cCI6MTYzNTkzMDIwMn0.c61GaAYctRwXdIqNOtG1B92sCk1gu1KXsW5GgczjQgM",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "raw",
+									"raw": "{\n    \"customer_id\": 1,\n    \"name\": \"customer 1\",\n    \"address\": \"address 1\",\n    \"phone\": \"phone 1\"\n}",
+									"options": {
+										"raw": {
+											"language": "json"
+										}
+									}
+								},
+								"url": {
+									"raw": "localhost:3000/api/v1/customers/create",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"customers",
+										"create"
+									]
+								},
+								"description": "Use this endpoint for creating customer.\nex: \n\ncurl --location --request POST 'localhost:3000/api/v1/customers/create' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5Mjk2MDIsImV4cCI6MTYzNTkzMDIwMn0.c61GaAYctRwXdIqNOtG1B92sCk1gu1KXsW5GgczjQgM' \\\n--header 'Content-Type: application/json' \\\n--data-raw '{\n    \"customer_id\": 1,\n    \"name\": \"customer 1\",\n    \"address\": \"address 1\",\n    \"phone\": \"phone 1\"\n}'"
+							},
+							"response": []
+						},
+						{
+							"name": "Find Customer",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/api/v1/customers/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"customers",
+										"1"
+									]
+								},
+								"description": "Use this endpoint to find customer by customer id.\nex:\n\ncurl --location --request GET 'localhost:3000/api/v1/customers/1' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM'"
+							},
+							"response": []
+						},
+						{
+							"name": "Delete Customer",
+							"request": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/api/v1/customers/delete/1",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"customers",
+										"delete",
+										"1"
+									]
+								},
+								"description": "Use this endpoint to delete customer.\nEx:\n\ncurl --location --request DELETE 'localhost:3000/api/v1/customers/delete/1' \\\n--header 'authorization: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5MzA2OTksImV4cCI6MTYzNTkzMTI5OX0.H_Yr2SqpR3asBn47KmEeDQziL6JDOtMVw0_RhJ3K6PM'"
+							},
+							"response": []
+						}
+					]
+				},
+				{
+					"name": "Order",
+					"item": [
+						{
+							"name": "Get all orders",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "authorization",
+										"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyNGRmZDU0NDQ4ZjAwMWU0YWRjNDciLCJpYXQiOjE2MzU5Mjk2MDIsImV4cCI6MTYzNTkzMDIwMn0.c61GaAYctRwXdIqNOtG1B92sCk1gu1KXsW5GgczjQgM",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "localhost:3000/api/v1/orders",
+									"host": [
+										"localhost"
+									],
+									"port": "3000",
+									"path": [
+										"api",
+										"v1",
+										"orders"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "posts",
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "authorization",
+						"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2MTgyMjBjMjI1ZmNmYzAwMWVjZDc3OGYiLCJpYXQiOjE2MzU5MTgzOTMsImV4cCI6MTYzNTkxODk5M30.UaVx-SOgoQHjbBMeVrazvBGUzMcnGHaz2wpCA_VSYho",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "localhost:3000/api/v1/posts",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"v1",
+						"posts"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
